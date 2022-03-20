@@ -2,6 +2,7 @@ const { json } = require('express')
 const session = require('express-session')
 const express = require('express')
 const MongoStore = require('connect-mongo')
+const flash = require('connect-flash')
 const app = express()
 
 let sessionOptions = session({
@@ -13,6 +14,7 @@ let sessionOptions = session({
 }) 
 
 app.use(sessionOptions)
+app.use(flash())
 
 const router = require('./router')
 
