@@ -1,4 +1,3 @@
-const { response } = require('../app')
 const Post = require('../models/Post')
 
 exports.viewCreateScreen = function(req, res) {
