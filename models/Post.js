@@ -1,5 +1,5 @@
-const PostsCollection = require('../db').db().collection("posts")
-const ObjectId = require('mongodb').ObjectId
+const postsCollection = require('../db').db().collection("posts")
+const ObjectID = require('mongodb').ObjectId
 
 let Post = function(data, userid) { 
   this.data = data
@@ -15,8 +15,8 @@ Post.prototype.cleanUp = function() {
   this.data = {
     title: this.data.title.trim(),
     body: this.data.body.trim(),
-    createdData: new Date(),
-    author: ObjectId(this.userid)
+    createdDate: new Date(),
+    author: ObjectID(this.userid)
   }
 }
 
@@ -31,7 +31,7 @@ Post.prototype.create = function() {
     this.validate()
     if (!this.errors.length) {
       // save post into databas
-      PostsCollection.insertOne(this.data).then(() => {
+      postsCollection.insertOne(this.data).then(() => {
         resolve()
       }).catch(() => {
         this.errors.push("Please try again later")
@@ -39,6 +39,21 @@ Post.prototype.create = function() {
       })
     } else {
       reject(this.errors)
+    }
+  })
+}
+
+Post.findSingleById = function(id) {
+  return new Promise(async function(resolve, reject) {
+    if (typeof(id) != "string" || !ObjectID.isValid(id)) {
+      reject()
+      return
+    }
+    let post = await postsCollection.findOne({_id: new ObjectID(id)})
+    if (post) {
+      resolve(post)
+    } else {
+      reject()
     }
   })
 }
