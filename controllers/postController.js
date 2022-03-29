@@ -1,4 +1,3 @@
-const { rawListeners } = require('../app')
 const Post = require('../models/Post')
 
 exports.viewCreateScreen = function(req, res) {
@@ -27,8 +26,8 @@ exports.viewSingle = async function(req, res) {
 
 exports.viewEditScreen = async function(req, res) {
   try {
-    let post = await Post.findSingleById(req.params.id)
-    if (post.authorId == req.visitorId) {
+    let post = await Post.findSingleById(req.params.id, req.visitorId)
+    if (post.isVisitorOwner) {
       res.render("edit-post", {post: post})
     } else {
       req.flash("errors", "You do not have permission to perform that action.")
