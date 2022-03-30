@@ -129,7 +129,7 @@ Post.findSingleById = function(id, visitorId) {
 
 Post.findByAuthorId = function(authorId) {
   return Post.reusablePostQuery([
-    {$match: {authro: authorId}},
+    {$match: {author: authorId}},
     {$sort: {createdDate: -1}}
   ])
 }
