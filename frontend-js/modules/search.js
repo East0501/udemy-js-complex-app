@@ -38,9 +38,9 @@ export default class Search {
     this.previousValue = value
   }
 
-  sendRequest() {
-    axios.post('/search', {searchTerm: this.inputField.value}).then(() => {
-
+  sendRequest() { 
+    axios.post('/search', {searchTerm: this.inputField.value}).then((response) => {
+      console.log(response.data)
     }).catch(() => {
       alert("the request failed")
     })
