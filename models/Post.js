@@ -1,9 +1,11 @@
 const postsCollection = require('../db').db().collection("posts")
-const ObjectID = require('mongodb').ObjectId
+const ObjectID = require('mongodb').ObjectID
 const User = require('./User')
 const sanitizeHTML = require('sanitize-html')
 
-let Post = function(data, userid, requestedPostId) { 
+postsCollection.createIndex({title: "text", body: "text"})
+
+let Post = function(data, userid, requestedPostId) {
   this.data = data
   this.errors = []
   this.userid = userid
@@ -33,11 +35,11 @@ Post.prototype.create = function() {
     this.cleanUp()
     this.validate()
     if (!this.errors.length) {
-      // save post into databas
+      // save post into database
       postsCollection.insertOne(this.data).then((info) => {
         resolve(info.insertedId)
       }).catch(() => {
-        this.errors.push("Please try again later")
+        this.errors.push("Please try again later.")
         reject(this.errors)
       })
     } else {
@@ -51,13 +53,13 @@ Post.prototype.update = function() {
     try {
       let post = await Post.findSingleById(this.requestedPostId, this.userid)
       if (post.isVisitorOwner) {
-        // actually update db
+        // actually update the db
         let status = await this.actuallyUpdate()
         resolve(status)
       } else {
         reject()
       }
-    }  catch {
+    } catch {
       reject()
     }
   })
@@ -144,7 +146,7 @@ Post.delete = function(postIdToDelete, currentUserId) {
         resolve()
       } else {
         reject()
-      }
+      }    
     } catch {
       reject()
     }
@@ -158,7 +160,7 @@ Post.search = function(searchTerm) {
         {$match: {$text: {$search: searchTerm}}}
       ], undefined, [{$sort: {score: {$meta: "textScore"}}}])
       resolve(posts)
-    } else {
+    } else { 
       reject()
     }
   })

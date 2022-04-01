@@ -77,7 +77,7 @@ exports.delete = function(req, res) {
 }
 
 exports.search = function(req, res) {
-  Post.search(req.body.searchTerm).then((posts) => {
+  Post.search(req.body.searchTerm).then(posts => {
     res.json(posts)
   }).catch(() => {
     res.json([])
