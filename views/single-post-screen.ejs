@@ -9,8 +9,8 @@
   </div>
     
   <p class="text-muted small">
-    <a href="#"><img class="avatar-tiny" src="<%= post.author.avatar %>"></a>
-    Posted by <a href="#"><%= post.author.username %></a> on <%= post.createdDate.getMonth() + 1 %>/<%= post.createdDate.getDate() %>/<%= post.createdDate.getFullYear() %></p>
+    <a href="/profile/<%= post.author.username %>"><img class="avatar-tiny" src="<%= post.author.avatar %>"></a>
+    Posted by <a href="/profile/<%= post.author.username %>"><%= post.author.username %></a> on <%= post.createdDate.getMonth() + 1 %>/<%= post.createdDate.getDate() %>/<%= post.createdDate.getFullYear() %></p>
 
     <% if (post.isVisitorOwner) { %>
       <span>
@@ -19,7 +19,7 @@
           <button class="delete-post-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
         </form>
       </span>
-   <% } %>
+    <% } %>
 
   <div class="body-content mt-4">
     <%- filterUserHTML(post.body) %>
